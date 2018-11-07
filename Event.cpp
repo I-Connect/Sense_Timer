@@ -42,12 +42,16 @@ void Event::update(void)
 
 void Event::update(unsigned long now)
 {
-	if (now - lastEventTime >= period)
+  if ((now > lastEventTime ? now - lastEventTime : 0) >= period)
 	{
 		switch (eventType)
 		{
 			case EVENT_EVERY:
-				(*callback)();
+        if (callback_ptr) {
+          callbackWithPtr(callback_ptr);
+        } else {
+          callback();
+        }
 				break;
 
 			case EVENT_OSCILLATE:

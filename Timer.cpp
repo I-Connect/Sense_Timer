@@ -33,7 +33,7 @@ Timer::Timer(void)
 {
 }
 
-int8_t Timer::every(unsigned long period, void (*callback)(), int repeatCount)
+int8_t Timer::every(unsigned long period, EventCb callback, int repeatCount)
 {
 	int8_t i = findFreeEventIndex();
 	if (i == -1) return -1;
@@ -42,19 +42,44 @@ int8_t Timer::every(unsigned long period, void (*callback)(), int repeatCount)
 	_events[i].period = period;
 	_events[i].repeatCount = repeatCount;
 	_events[i].callback = callback;
-	_events[i].lastEventTime = millis();
+  _events[i].lastEventTime = millis();
 	_events[i].count = 0;
 	return i;
 }
 
-int8_t Timer::every(unsigned long period, void (*callback)())
+int8_t Timer::every(unsigned long period, EventCbPtr callback, int repeatCount, void *ptr)
+{
+	int8_t i = findFreeEventIndex();
+	if (i == -1) return -1;
+
+	_events[i].eventType = EVENT_EVERY;
+	_events[i].period = period;
+	_events[i].repeatCount = repeatCount;
+	_events[i].callbackWithPtr = callback;
+  _events[i].callback_ptr = ptr;
+  _events[i].lastEventTime = millis();
+	_events[i].count = 0;
+	return i;
+}
+
+int8_t Timer::every(unsigned long period, EventCb callback)
 {
 	return every(period, callback, -1); // - means forever
 }
 
-int8_t Timer::after(unsigned long period, void (*callback)())
+int8_t Timer::every(unsigned long period, EventCbPtr callback, void *ptr)
+{
+	return every(period, callback, -1, ptr); // - means forever
+}
+
+int8_t Timer::after(unsigned long period, EventCb callback)
 {
 	return every(period, callback, 1);
+}
+
+int8_t Timer::after(unsigned long period, EventCbPtr callback, void *ptr)
+{
+	return every(period, callback, 1, ptr);
 }
 
 int8_t Timer::oscillate(uint8_t pin, unsigned long period, uint8_t startingValue, int repeatCount)
@@ -121,7 +146,7 @@ void Timer::update(unsigned long now)
 	{
 		if (_events[i].eventType != EVENT_NONE)
 		{
-			_events[i].update(now);
+      _events[i].update(now);
 		}
 	}
 }

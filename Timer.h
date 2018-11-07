@@ -37,9 +37,12 @@ class Timer
 public:
   Timer(void);
 
-  int8_t every(unsigned long period, void (*callback)(void));
-  int8_t every(unsigned long period, void (*callback)(void), int repeatCount);
-  int8_t after(unsigned long duration, void (*callback)(void));
+  int8_t every(unsigned long period, EventCb callback);
+  int8_t every(unsigned long period, EventCbPtr callback, void *ptr = 0);
+  int8_t every(unsigned long period, EventCb callback, int repeatCount);
+  int8_t every(unsigned long period, EventCbPtr callback, int repeatCount, void *ptr = 0);
+  int8_t after(unsigned long duration, EventCb callback);
+  int8_t after(unsigned long duration, EventCbPtr callback, void *ptr = 0);
   int8_t oscillate(uint8_t pin, unsigned long period, uint8_t startingValue);
   int8_t oscillate(uint8_t pin, unsigned long period, uint8_t startingValue, int repeatCount);
   

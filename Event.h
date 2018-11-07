@@ -29,6 +29,9 @@
 #define EVENT_EVERY 1
 #define EVENT_OSCILLATE 2
 
+typedef void (*EventCb)(void);
+typedef void (*EventCbPtr)(void *ptr);
+
 class Event
 {
 
@@ -41,7 +44,9 @@ public:
   int repeatCount;
   uint8_t pin;
   uint8_t pinState;
-  void (*callback)(void);
+  EventCb callback;
+  EventCbPtr callbackWithPtr;
+  void *callback_ptr = nullptr;
   unsigned long lastEventTime;
   int count;
 };
