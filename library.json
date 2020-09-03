@@ -1,0 +1,26 @@
+{
+    "name": "Sense_Timer",
+    "version": "0.0.0",
+    "description": "Timer",
+    "authors": [
+        {
+            "name": "Bas Schouten",
+            "maintainer": true
+        },
+        {
+            "name": "Jeroen van de Vorst"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/I-Connect/Sense_Timer"
+    },
+    "frameworks": "Arduino",
+    "platforms": [
+        "espressif32",
+        "atmelavr"
+    ],
+    "build": {
+        "flags": "-Wno-unused-function"
+    }
+  }
